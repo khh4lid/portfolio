@@ -65,7 +65,7 @@
   .fade.in{opacity:1;transform:none}
 
   /* ============ HERO ============ */
-  .hero{min-height:100vh;display:flex;flex-direction:column;position:relative;overflow-x:clip}
+  .hero{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;position:relative;overflow-x:clip}
   nav{display:flex;justify-content:space-between;align-items:center;padding:26px 28px 0}
   nav .links{display:flex;gap:30px}
   nav a{font-family:'Kanit';font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);font-size:15px;transition:opacity .2s}
@@ -118,7 +118,7 @@
   .tile-shot .lab{z-index:3;color:#fff;letter-spacing:.04em;text-shadow:0 1px 4px rgba(0,0,0,.95)}
 
   /* ============ ABOUT ============ */
-  .about{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px;position:relative;gap:60px;overflow:hidden}
+  .about{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px;position:relative;gap:60px;overflow:hidden}
   .deco{position:absolute;opacity:.9;pointer-events:none}
   .deco svg{display:block}
   .about h2{font-family:'Kanit';font-weight:900;text-transform:uppercase;line-height:.9;letter-spacing:-.03em;font-size:clamp(3rem,12vw,160px)}
@@ -128,7 +128,11 @@
   /* ============ SERVICES ============ */
   .services{background:#FFFFFF;border-radius:clamp(40px,5vw,60px);margin:0 clamp(0px,2vw,28px);padding:110px 24px;position:relative;z-index:2}
   .scrub{position:relative;height:300vh;background:transparent}
-  .scrub-stage{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .scrub-stage{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;overflow:hidden;padding:0 20px}
+  .reel-head{text-align:center;max-width:760px;will-change:opacity,transform}
+  .reel-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#FF7A1A}
+  .reel-title{font-family:'Kanit',sans-serif;font-weight:800;font-size:clamp(1.7rem,4.2vw,3rem);line-height:1.05;letter-spacing:-.02em;margin:14px 0 12px}
+  .reel-sub{color:var(--muted);font-size:clamp(14px,1.5vw,17px);line-height:1.55;max-width:60ch;margin:0 auto}
   .scrub-vid{width:min(92vw,1060px);height:auto;border-radius:26px;display:block;will-change:transform;transform-origin:center center;box-shadow:0 30px 90px rgba(0,0,0,.55);background:#000}
   .scrub-hint{position:absolute;bottom:42px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);transition:opacity .3s;animation:scrubpulse 1.8s ease-in-out infinite}
   @keyframes scrubpulse{0%,100%{opacity:.3}50%{opacity:.85}}
@@ -168,13 +172,14 @@
 
   @media(max-width:640px){
     .wrap{background:#0C0C0C}
-    .scrub{height:auto;padding:30px 14px}
-    .scrub-stage{position:relative;height:auto}
+    .scrub{height:auto;padding:46px 16px}
+    .scrub-stage{position:relative;height:auto;gap:22px}
     .scrub-vid{width:100%;box-shadow:0 16px 40px rgba(0,0,0,.5)}
     .scrub-hint{display:none}
+    .reel-title{font-size:clamp(1.5rem,7vw,2rem)}
     .hero{background:var(--silk) center center / cover no-repeat}
-    nav .links{gap:16px}
-    nav a{font-size:12px}
+    html,body{overflow-x:clip}
+    nav .links{display:none}
     .hero-stack{gap:22px}
     .hero-name2{font-size:clamp(48px,15vw,120px);white-space:normal;line-height:.95}
     .portrait{width:min(74vw,330px)}
@@ -269,7 +274,7 @@
   .win-badge svg{width:14px;height:14px;flex:0 0 auto}
 
   /* ===== 3D demo modal ===== */
-  .demo-modal{position:fixed;inset:0;z-index:9999;background:rgba(6,9,13,.86);backdrop-filter:blur(6px);
+  .demo-modal{position:fixed;inset:0;z-index:9999;background:rgba(6,9,13,.86);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
     display:none;align-items:center;justify-content:center;padding:clamp(10px,2vw,28px);opacity:0;transition:opacity .35s}
   .demo-modal.open{display:flex;opacity:1}
   .demo-shell{position:relative;width:min(1280px,100%);height:min(86vh,860px);
@@ -471,6 +476,11 @@
   <!-- ================= SCROLL-SCRUB REEL ================= -->
   <section class="scrub" id="reel">
     <div class="scrub-stage">
+      <div class="reel-head">
+        <span class="reel-eyebrow">Leadership &middot; Team</span>
+        <h2 class="reel-title grad-text">Proud to lead minds that build great things.</h2>
+        <p class="reel-sub">Sparking bold ideas together &mdash; and turning them into products that matter.</p>
+      </div>
       <video class="scrub-vid" muted playsinline preload="auto" disablepictureinpicture>
         <source src="clip.webm" type="video/webm">
         <source src="clip.mp4" type="video/mp4">
@@ -850,28 +860,47 @@
     const hint=document.querySelector('.scrub-hint');
     if(!sec||!vid) return;
     if(window.innerWidth<=640){ vid.loop=true; vid.muted=true; vid.setAttribute('autoplay',''); vid.play().catch(()=>{}); return; }
-    const SCRUB_END=0.78;
-    let raf=false;
-    function onScroll(){
-      raf=false;
+    const SCRUB_END=0.78, FADE_START=0.62;
+    let targetT=0, curT=0, looping=false;
+    function progress(){
       const total=sec.offsetHeight-window.innerHeight;
       const scrolled=Math.min(Math.max(-sec.getBoundingClientRect().top,0),total);
-      const prog=total>0?scrolled/total:0;
-      const sp=Math.min(prog/SCRUB_END,1);
-      const dur=vid.duration;
-      if(dur&&isFinite(dur)){ try{ vid.currentTime=Math.min(sp*dur,dur-0.001); }catch(e){} }
+      return total>0?scrolled/total:0;
+    }
+    const head=document.querySelector('.reel-head');
+    function visuals(prog){
       const zp=Math.max(0,(prog-SCRUB_END)/(1-SCRUB_END));
       vid.style.transform='scale('+(1+zp*1.7)+')';
       vid.style.borderRadius=(26*(1-zp))+'px';
-      // vanish: fade out over the last stretch (after most of the zoom)
-      const FADE_START=0.62;
       const fp=zp<=FADE_START?0:(zp-FADE_START)/(1-FADE_START);
       vid.style.opacity=String(1-fp);
+      // colour grade: full colour at start -> black & white as the clip plays
+      const g=Math.min(prog/SCRUB_END,1);
+      vid.style.filter='grayscale('+g+') contrast('+(1+g*0.06)+')';
+      // headline fades out as the zoom takes over
+      if(head){ const hf=Math.max(0,Math.min(1,(prog-0.5)/0.22)); head.style.opacity=String(1-hf); head.style.transform='translateY('+(-hf*18)+'px)'; }
       if(hint) hint.style.opacity=prog>0.04?'0':'';
+    }
+    function ease(){
+      const dur=vid.duration;
+      if(dur&&isFinite(dur)){
+        curT += (targetT-curT)*0.22;                 // smooth catch-up to scroll
+        if(Math.abs(targetT-curT)<0.004) curT=targetT;
+        try{ vid.currentTime=curT; }catch(e){}
+      }
+      if(Math.abs(targetT-curT)>0.004){ requestAnimationFrame(ease); }
+      else { looping=false; }
+    }
+    function onScroll(){
+      const prog=progress();
+      const dur=vid.duration;
+      if(dur&&isFinite(dur)){ targetT=Math.min(Math.min(prog/SCRUB_END,1)*dur,dur-0.001); }
+      visuals(prog);
+      if(!looping){ looping=true; requestAnimationFrame(ease); }
     }
     vid.addEventListener('loadedmetadata',onScroll);
     vid.addEventListener('loadeddata',onScroll);
-    window.addEventListener('scroll',()=>{if(!raf){raf=true;requestAnimationFrame(onScroll);}},{passive:true});
+    window.addEventListener('scroll',onScroll,{passive:true});
     window.addEventListener('resize',onScroll);
     onScroll();
   })();
