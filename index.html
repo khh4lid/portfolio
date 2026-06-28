@@ -863,6 +863,10 @@
       const zp=Math.max(0,(prog-SCRUB_END)/(1-SCRUB_END));
       vid.style.transform='scale('+(1+zp*1.7)+')';
       vid.style.borderRadius=(26*(1-zp))+'px';
+      // vanish: fade out over the last stretch (after most of the zoom)
+      const FADE_START=0.62;
+      const fp=zp<=FADE_START?0:(zp-FADE_START)/(1-FADE_START);
+      vid.style.opacity=String(1-fp);
       if(hint) hint.style.opacity=prog>0.04?'0':'';
     }
     vid.addEventListener('loadedmetadata',onScroll);
