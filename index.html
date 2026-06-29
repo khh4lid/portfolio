@@ -137,17 +137,19 @@
   /* ============ SERVICES ============ */
   .services{background:#FFFFFF;border-radius:clamp(40px,5vw,60px);margin:0 clamp(0px,2vw,28px);padding:110px 24px;position:relative;z-index:2}
   .scrub{position:relative;height:280vh;background:transparent}
-  .scrub-pin{position:sticky;top:0;height:100vh;height:100dvh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:clamp(20px,5vh,70px) 20px}
-  .scrub-stage{display:flex;flex-direction:column;align-items:center;gap:clamp(14px,2.6vh,26px);width:min(1100px,92vw)}
-  .reel-head{text-align:center;width:min(760px,90vw);position:relative;z-index:3;will-change:opacity,transform}
+  .scrub-pin{position:sticky;top:0;height:100vh;height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(18px,3.2vh,32px);overflow:hidden;padding:clamp(18px,4vh,56px) 20px}
+  .scrub-stage{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3.2vh,32px);width:min(1000px,92vw)}
+  .reel-head{text-align:center;width:min(720px,90vw);position:relative;z-index:3;will-change:opacity,transform}
   .reel-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:#FF7A1A}
-  .reel-title{font-family:'Kanit',sans-serif;font-weight:800;font-size:clamp(1.7rem,4.2vw,3rem);line-height:1.05;letter-spacing:-.02em;margin:14px 0 12px}
-  .reel-sub{color:var(--muted);font-size:clamp(14px,1.5vw,17px);line-height:1.55;max-width:60ch;margin:0 auto}
-  .scrub-frame{width:min(1060px,92vw);max-height:74vh;display:flex;align-items:center;justify-content:center;border-radius:26px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.55);background:#000;will-change:transform,filter,opacity;transform-origin:center center;position:relative;z-index:2}
-  .scrub-vid{width:100%;height:auto;display:block;background:#000}
+  .reel-title{font-family:'Kanit',sans-serif;font-weight:800;font-size:clamp(1.9rem,3.1vw,2.55rem);line-height:1.07;letter-spacing:-.02em;margin:12px 0 10px}
+  .reel-sub{color:var(--muted);font-size:clamp(13px,1.15vw,15.5px);line-height:1.55;max-width:58ch;margin:0 auto}
+  .scrub-frame{width:min(860px,90vw);aspect-ratio:16/9;border-radius:24px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.55);background:#000;will-change:width,height,top,left,filter,opacity;transform-origin:center center;position:relative;z-index:2}
+  .scrub-vid{width:100%;height:100%;object-fit:cover;display:block;background:#000}
   .scrub-hint{display:none}
   .reel-fallback{height:auto}
   .reel-fallback .scrub-pin{position:static;height:auto;padding:72px 20px 92px}
+  .reel-fallback .scrub-frame{aspect-ratio:16/9;height:auto;max-height:none}
+  .reel-fallback .scrub-vid{height:auto;object-fit:contain}
   @keyframes scrubpulse{0%,100%{opacity:.3}50%{opacity:.85}}
   .services h2{font-family:'Kanit';font-weight:900;text-transform:uppercase;text-align:center;color:#0B0F14;font-size:clamp(3rem,12vw,150px);margin-bottom:70px;letter-spacing:-.03em}
   .svc-list{max-width:1000px;margin:0 auto}
@@ -188,8 +190,8 @@
     .scrub{height:auto;padding:0}
     .scrub-pin{position:static;height:auto;padding:46px 16px}
     .scrub-stage{height:auto;gap:22px;width:100%}
-    .scrub-frame{width:100%;max-height:none;box-shadow:0 16px 40px rgba(0,0,0,.5)}
-    .scrub-vid{width:100%;height:auto}
+    .scrub-frame{width:100%;height:auto;aspect-ratio:auto;max-height:none;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+    .scrub-vid{width:100%;height:auto;object-fit:contain}
     .scrub-hint{display:none}
     .reel-title{font-size:clamp(1.5rem,7vw,2rem)}
     .reel-head{position:static;left:auto;top:auto;transform:none;width:auto;max-width:92vw;margin:0 auto}
@@ -997,7 +999,7 @@
     upd();
   })();
 
-  /* ---- Reel video: scroll-scrub (forward + reverse) -> full-screen zoom + desaturate + fade ---- */
+  /* ---- Reel video: scroll-scrub -> centered cover-zoom that fills the screen (title stays until the clip ends) ---- */
   (function(){
     const sec=document.getElementById('reel');
     const v=document.querySelector('.scrub-vid');
@@ -1008,92 +1010,120 @@
     const mqMobile=window.matchMedia('(max-width:640px)');
     v.muted=true; v.setAttribute('playsinline','');
 
-    let scrubMode=false, dur=0, raf=false, poll=null, frameRest=null;
+    let scrubMode=false, dur=0, raf=false, poll=null, frameRest=null, headRest=null, restW=0, restH=0, aspect=16/9, phase='';
     const clamp=(x)=>Math.min(1,Math.max(0,x));
     const smooth=(x)=>x*x*(3-2*x);
     const getDur=()=>{const d=v.duration; return (isFinite(d)&&d>0)?d:0;};
-    function clearStyles(){ if(frame){frame.style.transform='';frame.style.filter='';frame.style.opacity='';frame.style.borderRadius='';} if(head){head.style.opacity='';head.style.transform='';} }
+
+    function computeRest(){
+      if(v.videoWidth>0 && v.videoHeight>0) aspect=v.videoWidth/v.videoHeight;
+      const vw=window.innerWidth, vh=window.innerHeight;
+      const availW=Math.min(860, vw*0.90);
+      const availH=vh*0.56;                 // leave room for the title above
+      let w=Math.min(availW, availH*aspect);
+      restW=Math.round(w); restH=Math.round(w/aspect);
+    }
+
+    function resetReel(){
+      frame.style.position=''; frame.style.left=''; frame.style.top=''; frame.style.zIndex='';
+      frame.style.margin=''; frame.style.filter='grayscale(0%)'; frame.style.opacity='1'; frame.style.borderRadius='';
+      frame.style.pointerEvents=''; frame.style.visibility='';
+      frame.style.width=restW+'px'; frame.style.height=restH+'px'; frame.style.aspectRatio='auto';
+      head.style.position=''; head.style.left=''; head.style.top=''; head.style.width=''; head.style.zIndex='';
+      head.style.opacity='1'; head.style.transform='none'; head.style.pointerEvents='';
+    }
 
     function fallback(){
-      scrubMode=false; if(poll){clearInterval(poll);poll=null;}
-      sec.classList.add('reel-fallback'); clearStyles(); v.loop=true;
+      scrubMode=false; phase=''; if(poll){clearInterval(poll);poll=null;}
+      sec.classList.add('reel-fallback');
+      frame.removeAttribute('style'); head.removeAttribute('style');
+      v.loop=true;
       const p=v.play&&v.play(); if(p&&p.catch)p.catch(function(){});
     }
 
-    const ZS=0.60, ZE=0.88;   // zoom start / end (becomes full-screen by ZE)
+    const TF0=0.40, TF1=0.54, ZS=0.56, ZE=0.86;   // title fades (TF0->TF1) BEFORE the zoom (ZS) starts; ZE = fully fills the screen
     function render(){
       raf=false; if(!scrubMode) return;
       const rect=sec.getBoundingClientRect();
-      const vh=window.innerHeight, vw=window.innerWidth;
+      const vw=window.innerWidth, vh=window.innerHeight;
       const total=sec.offsetHeight-vh;
       let p=total>0?(-rect.top)/total:0; p=clamp(p);
       const pinned=rect.top<=1 && rect.bottom>=vh-1;
       if(dur>0){ const t=p*dur*0.999; if(Math.abs(v.currentTime-t)>0.018){ try{v.currentTime=t;}catch(_){}} }
 
       if(p<ZS){
-        // playback: video rests in its frame, title fully visible
-        if(frame){ frame.style.transform='none'; frame.style.filter='grayscale(0%)'; frame.style.opacity='1'; frame.style.borderRadius=''; }
-        if(head){ head.style.opacity='1'; head.style.transform='none'; }
-        if(pinned && frame && !frameRest) frameRest=frame.getBoundingClientRect(); // cache resting rect once
+        if(phase!=='rest'){ resetReel(); phase='rest'; }
+        // title is fully visible while the clip plays at fixed size, then fades out gradually BEFORE the zoom begins
+        const tf=clamp((p-TF0)/(TF1-TF0));
+        head.style.opacity=(1-tf).toFixed(3);
+        head.style.transform='translateY('+(-tf*20).toFixed(1)+'px)';
         return;
       }
 
-      // ----- end sequence: grow to full screen + desaturate + fade -----
-      const ez=smooth(clamp((p-ZS)/(ZE-ZS)));     // 0 -> 1 (full screen at ZE)
-      if(frame){
-        if(!frameRest && pinned) frameRest=frame.getBoundingClientRect();
-        if(frameRest && frameRest.width>0){
-          const cx=frameRest.left+frameRest.width/2, cy=frameRest.top+frameRest.height/2;
-          const tx=(vw/2-cx)*ez, ty=(vh/2-cy)*ez;
-          const cover=Math.max(vw/frameRest.width, vh/frameRest.height)*1.06;
-          const sc=1+(cover-1)*ez;
-          frame.style.transform='translate('+tx.toFixed(1)+'px,'+ty.toFixed(1)+'px) scale('+sc.toFixed(3)+')';
-          frame.style.borderRadius=(26*(1-ez)).toFixed(1)+'px';
-        } else {
-          frame.style.transform='scale('+(1+1.2*ez).toFixed(3)+')';
-        }
-        frame.style.filter='grayscale('+Math.round(clamp((p-ZS)/(0.90-ZS))*100)+'%)';
-        frame.style.opacity=(1-clamp((p-ZE)/(1-ZE))).toFixed(3);   // fade only after it fills the screen
-      }
-      // title disappears as the clip finishes
-      if(head){
-        const hp=clamp((p-0.85)/0.15);
-        head.style.opacity=(1-hp).toFixed(3);
-        head.style.transform='translateY('+(-hp*26).toFixed(1)+'px)';
-      }
+      // ----- end sequence: grow from its spot to a centered, screen-filling cover, then fade -----
+      phase='zoom';
+      const ez=smooth(clamp((p-ZS)/(ZE-ZS)));            // 0 -> 1 fills the screen
+      // rest position computed deterministically (matches the CSS flex layout) so the switch into the zoom is perfectly continuous -> no jump
+      const headH=head.offsetHeight||200;
+      const gap=Math.min(32,Math.max(18,0.032*vh));
+      const fr={left:(vw-restW)/2, top:(vh-restH)/2+(headH+gap)/2, width:restW, height:restH};
+      // width & height both reach full at the SAME time -> no top/side gap (object-fit:cover crops, never stretches)
+      const curW=fr.width +(vw-fr.width )*ez;
+      const curH=fr.height+(vh-fr.height)*ez;
+      const curL=fr.left  +(0 -fr.left  )*ez;
+      const curT=fr.top   +(0 -fr.top   )*ez;
+      frame.style.position='fixed';
+      frame.style.aspectRatio='auto';
+      frame.style.left=curL.toFixed(1)+'px';
+      frame.style.top=curT.toFixed(1)+'px';
+      frame.style.width=curW.toFixed(1)+'px';
+      frame.style.height=curH.toFixed(1)+'px';
+      frame.style.margin='0';
+      frame.style.zIndex='5';
+      frame.style.pointerEvents='none';
+      frame.style.borderRadius=(24*(1-ez)).toFixed(1)+'px';
+      const gp=clamp((p-ZE)/(1-ZE));       // after it fills: desaturate + fade
+      frame.style.filter='grayscale('+Math.round(gp*100)+'%)';
+      frame.style.opacity=(1-gp).toFixed(3);
+      frame.style.visibility = p>=0.999 ? 'hidden' : 'visible';
+
+      // title already faded out before the zoom -> keep it hidden so it never overlaps the video
+      head.style.opacity='0';
     }
     function onScroll(){ if(raf)return; raf=true; requestAnimationFrame(render); }
 
     function enableScrub(){
       if(reduce||mqMobile.matches){ fallback(); return; }
       if(poll){clearInterval(poll);poll=null;}
-      scrubMode=true; frameRest=null; sec.classList.remove('reel-fallback');
+      scrubMode=true; phase=''; frameRest=null; headRest=null; sec.classList.remove('reel-fallback');
       v.loop=false; try{v.pause();}catch(_){}
-      dur=getDur(); onScroll();
+      dur=getDur(); computeRest(); onScroll();
     }
 
     function init(){
       if(reduce||mqMobile.matches){ fallback(); return; }
       dur=getDur();
-      if(dur>0){ enableScrub(); return; }
-      let tries=0;
-      poll=setInterval(()=>{
-        dur=getDur(); tries++;
-        if(dur>0){ enableScrub(); }
-        else if(tries>30){ clearInterval(poll); poll=null; fallback(); }
-      },100);
-      ['loadedmetadata','durationchange','canplay','loadeddata'].forEach(ev=>v.addEventListener(ev,()=>{ dur=getDur(); if(dur>0 && !scrubMode && !reduce && !mqMobile.matches) enableScrub(); }));
-      try{v.load();}catch(_){}
+      if(dur>0){ enableScrub(); }
+      else {
+        let tries=0;
+        poll=setInterval(()=>{ dur=getDur(); tries++; if(dur>0){ enableScrub(); } else if(tries>30){ clearInterval(poll); poll=null; fallback(); } },100);
+        try{v.load();}catch(_){}
+      }
+      ['loadedmetadata','durationchange','canplay','loadeddata'].forEach(ev=>v.addEventListener(ev,()=>{
+        dur=getDur();
+        if(scrubMode){ computeRest(); phase=''; frameRest=null; headRest=null; onScroll(); }
+        if(dur>0 && !scrubMode && !reduce && !mqMobile.matches) enableScrub();
+      }));
     }
 
     window.addEventListener('scroll',onScroll,{passive:true});
-    window.addEventListener('resize',()=>{ frameRest=null; onScroll(); },{passive:true});
+    window.addEventListener('resize',()=>{ frameRest=null; headRest=null; phase=''; if(scrubMode) computeRest(); onScroll(); },{passive:true});
     function onMq(){ if(mqMobile.matches){ fallback(); } else { dur=getDur(); if(dur>0) enableScrub(); else init(); } }
     if(mqMobile.addEventListener) mqMobile.addEventListener('change',onMq);
     else if(mqMobile.addListener) mqMobile.addListener(onMq);
 
     init();
-    window.addEventListener('load',()=>{ if(!scrubMode && !reduce && !mqMobile.matches){ dur=getDur(); if(dur>0) enableScrub(); } frameRest=null; onScroll(); });
+    window.addEventListener('load',()=>{ if(!scrubMode && !reduce && !mqMobile.matches){ dur=getDur(); if(dur>0) enableScrub(); } if(scrubMode){ computeRest(); phase=''; } frameRest=null; headRest=null; onScroll(); });
   })();
 
   /* ---- Project cards: file-deck (uniform cards, sticky-stacked tabs) ---- */
