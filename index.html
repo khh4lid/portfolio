@@ -819,6 +819,16 @@
   .pc-win .lchip img,.pc-win .lchip svg{width:19px;height:19px;object-fit:contain;display:block}
   .pc-win .pw-p{color:var(--amber);font-size:15px;font-weight:700;line-height:1;margin-left:-2px}
   .ct{font-variant-numeric:tabular-nums}
+  button.hn-stat{display:block;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;transition:border-color .25s,transform .25s,box-shadow .25s}
+  button.hn-stat:hover{border-color:rgba(255,122,26,.65);transform:translateY(-3px);box-shadow:0 18px 40px -22px rgba(255,122,26,.55)}
+  button.hn-stat:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+  .hn-stat .gl-logo{position:relative;display:grid;place-items:center;width:46px;height:46px;margin:0 0 15px;border-radius:13px;background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.35);transition:transform .25s}
+  .hn-stat .gl-logo img{width:34px;height:34px;object-fit:contain;display:block}
+  .hn-stat .gl-logo::after{content:"+";position:absolute;right:-7px;bottom:-7px;width:19px;height:19px;border-radius:50%;background:var(--amber);color:#150A02;font:700 14px/19px Kanit,sans-serif;text-align:center;box-shadow:0 0 0 2px #151515}
+  button.hn-stat:hover .gl-logo{transform:scale(1.07) rotate(-3deg)}
+  nav .links a.nav-cv{border:1px solid var(--amber);color:var(--amber);border-radius:999px;padding:3px 13px;transition:background .2s,color .2s}
+  nav .links a.nav-cv:hover{background:var(--amber);color:#150A02}
+  nav .links a.nav-cv::after{display:none}
   .pc-tab .pc-id{flex:0 0 auto}
   b .ct,b span.ct{display:inline!important;margin:0!important;padding:0!important;font:inherit!important;color:inherit!important;letter-spacing:inherit!important;line-height:inherit!important;position:static!important;border:0!important;background:none!important;white-space:nowrap}
 
@@ -908,6 +918,7 @@
         <a href="#exploring">Explore</a>
         <a href="#collaboration">Team</a>
         <a href="#contact">Contact</a>
+        <a class="nav-cv" href="Khaled_Waleed_CV.pdf" target="_blank" rel="noopener">CV</a>
       </div>
     </nav>
 
@@ -964,11 +975,74 @@
     <div class="gl-inner">
       <div class="gl-label fade" data-d="0">At a glance</div>
       <div class="hn-stats">
-        <div class="hn-stat fade" data-d="0"><b><span class="ct" data-count="1">1</span><em>st</em></b><span>Darb 2026, Digital Education track</span><i>MYR 2,000 prize</i></div>
-        <div class="hn-stat fade" data-d="0.06"><b>Top&nbsp;<span class="ct" data-count="25">25</span></b><span>of 225+ teams at GSR Hackathon</span><i>KFUPM, Saudi Arabia</i></div>
-        <div class="hn-stat fade" data-d="0.12"><b>Top&nbsp;<span class="ct" data-count="33">33</span></b><span>of 439 teams from 22 countries</span><i>Asian Hackathon 2026</i></div>
-        <div class="hn-stat fade" data-d="0.18"><b><span class="ct" data-count="5">5</span><em>&times;</em></b><span>Dean&apos;s List in a row</span><i>Feb 2025 to Apr 2026</i></div>
-        <div class="hn-stat fade" data-d="0.24"><b><span class="ct" data-count="3.73" data-dec="2">3.73</span></b><span>CGPA out of 4.00</span><i>BSc (Hons) Computer Science</i></div>
+        <button type="button" class="hn-stat fade" data-d="0" data-open="c-darb" title="Show the certificate" aria-label="Show proof: Darb 2026 certificate"><span class="gl-logo"><img src="data:image/webp;base64,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" alt="" loading="lazy" decoding="async"></span><b><span class="ct" data-count="1">1</span><em>st</em></b><span>Darb 2026, Digital Education track</span><i>MYR 2,000 prize</i></button>
+        <button type="button" class="hn-stat fade" data-d="0.06" data-open="c-gsr" title="Show the certificate" aria-label="Show proof: GSR Hackathon certificate"><span class="gl-logo"><img src="data:image/webp;base64,UklGRmAEAABXRUJQVlA4IFQEAADwGACdASpgAGAAPiUOhUIhhuM7ZgYAkSgDS4FrPDKfrP+g+/fKsme7PeWbto7hBXfXs7zEWj/59doiQ4wmgpHey+8ddHX5Vavw4X05jFSlq74fpItENMtxtukFwyyFJcbUri5LDYM0l5BFmy/1vASLYwDZQufV1XFkwZxTGN48zgbZxpMTRSsJEZoPp+tDHE+VWUZ/cG4iQ8QJvuSAhcTAJoqK9dyFXi2dPRn5Tuiia7CulSGAXj9iuuEy6YLCZQ3RmU0iJdhoE6YP7qXvdAAAAP7/fJWN9i+1e4pr9Fa1q/IC+M5FMx400RT4qN8fr/d/8f9pQeT+uXkZB+z5Klk29cb5WQXfA+pRdilpdQncff4P5V/dZQqb4z33r+t/5jK0Nh0Zdte31lP6MkR3ApZk0y67166W6UR0do4avvOn/5JkNl3orfoP/otdTeyIvWCRfdHM9a/2KsOXvnR+4of6Bxq31b/V504ER2f7JuNvjMfNBntVDXzSaIQpeHvCgYRTpq4g2Y5RI94+Mhat9JifQstorp3cX0fc04KdFHETjepU52ocdtGcz0rNsn6+v1Kv8hSfKFw/3Q6qwYL6LNJJv1yAf7d8VV69Ao8O8jju84bQp6LiHxLYG1fn8PMnPXt8P0lSjHrmeZBSyQUa+6xti72EJMQaf9uCvVFDz5BEhjpp1X4ENU1kUBbteZwN1MyZKAVms2QLaCaB8mr1x/30KT6O62dUHnDluU6+XaeRyZA30WoUSIw1/By7Vf2x65zxfEr2h+8to6sepOoMjvu4rjEofpx/u+q4EV+5C8N9fB/EUAUgtPpR0AxhI8VdnpLbl9zd9ukcnnmFn6ChQUzHAsSbAXRZLVvGdyCe/tnRY2FZQyTYrTH2rq9Zfgzq4ciCeyzh8rM/Z6GspC/1cCnZrZppArtfzPhcJ6xfOihBP02RYQ3KqzGnffd2Bau0kDwHDaiYNfEPdfKK9CZK5yAHnYc+qX1SnyxiBq3F9IjvwHbiXQojC7xtt7M37Ilpbn44BP7Ov9Ml1zjfqP1t8Z4lN2beBNb8UGP5IwnFColjmcdDZ/VWViPihE6RSkM3JxdpNbevfpAx2Le2msJsvH83Dn5HARuOWboVDKyWNstu/qBR/yq09m9Ro7bzxYcTWCLaZFWyko+3GfdQW+AsUIrmnFD2earUVyfvlDikVvEYFBVh3ESfzwzWtKCV38/tadHdhczzbz8oClHAknvdrgWbX9HrzMVlro+ERrnX7LfyPsowgoWwaD8bGfd98eAik6FtbK6IGo4msQzSDC2uhHH+bBRSsIH50XBxlC+rH4CLDaqf1e2ltS2aYAgYFtJTN+ZL80IrQIQiFCSYZjk2j7fBnqvmewBhbYUT/zOtjKVuQhWhB8h3bdh0/L1eNLNpq1NtuOAKLyEnFSKJdUufsEHLnl/yrZ3Rl6czTvB5ZzGquFqan0gt9Trw6YwXg76jeAfr6AAA" alt="" loading="lazy" decoding="async"></span><b>Top&nbsp;<span class="ct" data-count="25">25</span></b><span>of 225+ teams at GSR Hackathon</span><i>KFUPM, Saudi Arabia</i></button>
+        <button type="button" class="hn-stat fade" data-d="0.12" data-open="c-asian" title="Show the certificate" aria-label="Show proof: Asian Hackathon for Green Future certificate"><span class="gl-logo"><img src="data:image/webp;base64,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" alt="" loading="lazy" decoding="async"></span><b>Top&nbsp;<span class="ct" data-count="33">33</span></b><span>of 439 teams from 22 countries</span><i>Asian Hackathon 2026</i></button>
+        <button type="button" class="hn-stat fade" data-d="0.18" data-open="c-deans" title="Show the letters" aria-label="Show proof: Dean&apos;s List letters"><span class="gl-logo"><img src="data:image/webp;base64,UklGRlADAABXRUJQVlA4IEQDAADwEQCdASpgAGAAPiUOhkIhhnMvSQYAkSjLAAyxz0ROORH43fLv0k7auwTbK26v20D+npV5Udeyac8kzlnUdkerAl0f4xlq6I3L3oejujNDhJToiw0hz4pUpuBKpLTzX3jxhPY5H2gvk5Ktv2KU0a3njR60Yzo2VWqUb5gBNHy3hT24DRTBPnpbxLF5uX+Ppa/yQF/Bp0hRAAD+//+lDKV2QdwnBnX+qJ8rVNc5/i+fy9P50HhKpPvL62znsT2DtVXt0mrXK8nykcJDWUF1UOktNwuTEX7qQX/BvnfY1ZVOpGP4wXKLUSJtE8nJFhml5gaatX3XRahiRegNo9+849+JjYrsH92aKPdq3rbvmyAcUJOirYDRZPIOn4VxBqDCVbEOo0PWbLTDrPPK6WmSbvdv2U44l6F4Mg2znl+P+RIXxa7WL5257kZRMFxZJs7eje1rb0nXmKWfVMMsdrd7J9KGTLeKE2iP0aHHIyOv85qKZo+fJ/a/7R/6/gGtqBR/zP0zB/IwgPxgp6aoLv3jd/mUPj2clB2e7NLvh+4lldVu7uy7sIkud4+F38W1Lsl1dFvfPozzcUHfu8TehnO8/+P+39RbcG/9aahUn70bQ/d//lxTy977Rt9E/5mZInbfkYZp2RfdL8Qh7njRt7IilsNjjXjgPOsZzrCk9zf/hmWodF2QlWIJB1BwWD/nJdho/WXkIfw5/uFm0KZMK3/YT/jY/xoPLuPkafuQpqK/+iTKvH4UeajGDntGvMJboeolS5XTyY34+l6zkcZNUvHAJBSXMKsOtRUO3ZDVe5zlblORFVWfXgtUvy43I13DiG4qFQC2J14h2TdH62q8VvcOYr8rV0Cealms4qJi3FigV+P+RpsqA+j7AFVmm6dbBzpRGS206R+OMwFMMmAufCHVBRB5u6W0z+oxrfDdM//7xlWj9uX603owwnPgtD23y5EhJIkmVZBgNc7JlHPJxAjvm++pXvtqv1S6GoZBnfEwEQUY+/FBMn/+f+KbwjXGd98UyJoeT2YD+fQjrEXd01u5yld+5OcvibMP3bJVX4QLnJJPIwKciU6GIQrUS7Du3//1naH/8NWQIg7GxK4sGu+cWC/wAAAAAA==" alt="" loading="lazy" decoding="async"></span><b><span class="ct" data-count="5">5</span><em>&times;</em></b><span>Dean&apos;s List in a row</span><i>Feb 2025 to Apr 2026</i></button>
+        <button type="button" class="hn-stat fade" data-d="0.24" data-open="c-deans" title="Show the academic record" aria-label="Show proof: academic record"><span class="gl-logo"><img src="data:image/webp;base64,UklGRlADAABXRUJQVlA4IEQDAADwEQCdASpgAGAAPiUOhkIhhnMvSQYAkSjLAAyxz0ROORH43fLv0k7auwTbK26v20D+npV5Udeyac8kzlnUdkerAl0f4xlq6I3L3oejujNDhJToiw0hz4pUpuBKpLTzX3jxhPY5H2gvk5Ktv2KU0a3njR60Yzo2VWqUb5gBNHy3hT24DRTBPnpbxLF5uX+Ppa/yQF/Bp0hRAAD+//+lDKV2QdwnBnX+qJ8rVNc5/i+fy9P50HhKpPvL62znsT2DtVXt0mrXK8nykcJDWUF1UOktNwuTEX7qQX/BvnfY1ZVOpGP4wXKLUSJtE8nJFhml5gaatX3XRahiRegNo9+849+JjYrsH92aKPdq3rbvmyAcUJOirYDRZPIOn4VxBqDCVbEOo0PWbLTDrPPK6WmSbvdv2U44l6F4Mg2znl+P+RIXxa7WL5257kZRMFxZJs7eje1rb0nXmKWfVMMsdrd7J9KGTLeKE2iP0aHHIyOv85qKZo+fJ/a/7R/6/gGtqBR/zP0zB/IwgPxgp6aoLv3jd/mUPj2clB2e7NLvh+4lldVu7uy7sIkud4+F38W1Lsl1dFvfPozzcUHfu8TehnO8/+P+39RbcG/9aahUn70bQ/d//lxTy977Rt9E/5mZInbfkYZp2RfdL8Qh7njRt7IilsNjjXjgPOsZzrCk9zf/hmWodF2QlWIJB1BwWD/nJdho/WXkIfw5/uFm0KZMK3/YT/jY/xoPLuPkafuQpqK/+iTKvH4UeajGDntGvMJboeolS5XTyY34+l6zkcZNUvHAJBSXMKsOtRUO3ZDVe5zlblORFVWfXgtUvy43I13DiG4qFQC2J14h2TdH62q8VvcOYr8rV0Cealms4qJi3FigV+P+RpsqA+j7AFVmm6dbBzpRGS206R+OMwFMMmAufCHVBRB5u6W0z+oxrfDdM//7xlWj9uX603owwnPgtD23y5EhJIkmVZBgNc7JlHPJxAjvm++pXvtqv1S6GoZBnfEwEQUY+/FBMn/+f+KbwjXGd98UyJoeT2YD+fQjrEXd01u5yld+5OcvibMP3bJVX4QLnJJPIwKciU6GIQrUS7Du3//1naH/8NWQIg7GxK4sGu+cWC/wAAAAAA==" alt="" loading="lazy" decoding="async"></span><b><span class="ct" data-count="3.73" data-dec="2">3.73</span></b><span>CGPA out of 4.00</span><i>BSc (Hons) Computer Science</i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RECOGNITION ================= -->
+  <section class="recog" id="recognition">
+    <div class="recog-head fade" data-d="0">
+      <div class="r-eyebrow">Recognition</div>
+      <h2>Out in the real world.</h2>
+      <p class="r-sub">Where the work met the real world.</p>
+    </div>
+    <div class="recog-grid four">
+      <div class="fade" data-d="0">
+        <div class="rphoto">
+          <img src="assets/ab3071cf1d0b.jpg" alt="Darb 2026 hackathon win" id="img-darbwin" loading="lazy" decoding="async">
+          <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
+          <span class="r-tag">DARB 2026</span>
+          <span class="r-badge">1ST PLACE</span>
+        </div>
+        <div class="rcap">
+          <div class="r-cat">Hackathon</div>
+          <h3>Darb 2026 winner</h3>
+          <p>1st place in the Digital Education track, MYR 2,000. Honoured by the Ambassador of Yemen.</p>
+        </div>
+      </div>
+      <div class="fade" data-d="0.12">
+        <div class="rphoto">
+          <img src="assets/b0d5532bd7aa.jpg" alt="TNEX and Taylor's University showcase" loading="lazy" decoding="async">
+          <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
+          <span class="r-tag">TNEX AND TAYLOR&apos;S</span>
+          <span class="r-badge">SHOWCASE</span>
+        </div>
+        <div class="rcap">
+          <div class="r-cat">Industry</div>
+          <h3>TNEX and Taylor&apos;s University</h3>
+          <p>Selected by Taylor&apos;s University to present ClimaShield to TNEX.</p>
+        </div>
+      </div>
+      <div class="fade" data-d="0.24">
+        <div class="rphoto">
+          <img src="assets/231727630019.jpg" alt="ENERtec Asia 2026 TV interview" style="object-position:center 33%" loading="lazy" decoding="async">
+          <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
+          <span class="r-tag">ENERTEC ASIA 2026</span>
+          <span class="r-badge">ON AIR</span>
+        </div>
+        <div class="rcap">
+          <div class="r-cat">Media</div>
+          <h3>TV interview at ENERtec Asia 2026</h3>
+          <p>On air under the Energy and AI theme, on letting models like Random Forest guide energy decisions.</p>
+        </div>
+      </div>
+      <div class="fade" data-d="0.36">
+        <div class="rphoto">
+          <img src="assets/63b871acf8f2.webp" alt="Khaled interviewed by Estidamah at GSR 2026, KFUPM" style="object-position:center 30%" loading="lazy">
+          <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
+          <span class="r-tag">ESTIDAMAH AT KFUPM</span>
+          <span class="r-badge">INTERVIEW</span>
+        </div>
+        <div class="rcap">
+          <div class="r-cat">Media</div>
+          <h3>Talking AI with Estidamah</h3>
+          <p>On how AI can help farms run on less water and less electricity, at GSR 2026.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1399,69 +1473,6 @@
       </div>
     </div>
     <img id="img-gsr-congrats" src="assets/d708dd9a649e.webp" alt="" hidden loading="lazy" decoding="async">
-  </section>
-
-  <!-- ================= RECOGNITION ================= -->
-  <section class="recog" id="recognition">
-    <div class="recog-head fade" data-d="0">
-      <div class="r-eyebrow">Recognition</div>
-      <h2>Out in the real world.</h2>
-      <p class="r-sub">Where the work met the real world.</p>
-    </div>
-    <div class="recog-grid four">
-      <div class="fade" data-d="0">
-        <div class="rphoto">
-          <img src="assets/ab3071cf1d0b.jpg" alt="Darb 2026 hackathon win" id="img-darbwin" loading="lazy" decoding="async">
-          <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
-          <span class="r-tag">DARB 2026</span>
-          <span class="r-badge">1ST PLACE</span>
-        </div>
-        <div class="rcap">
-          <div class="r-cat">Hackathon</div>
-          <h3>Darb 2026 winner</h3>
-          <p>1st place in the Digital Education track, MYR 2,000. Honoured by the Ambassador of Yemen.</p>
-        </div>
-      </div>
-      <div class="fade" data-d="0.12">
-        <div class="rphoto">
-          <img src="assets/b0d5532bd7aa.jpg" alt="TNEX and Taylor's University showcase" loading="lazy" decoding="async">
-          <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
-          <span class="r-tag">TNEX AND TAYLOR&apos;S</span>
-          <span class="r-badge">SHOWCASE</span>
-        </div>
-        <div class="rcap">
-          <div class="r-cat">Industry</div>
-          <h3>TNEX and Taylor&apos;s University</h3>
-          <p>Selected by Taylor&apos;s University to present ClimaShield to TNEX.</p>
-        </div>
-      </div>
-      <div class="fade" data-d="0.24">
-        <div class="rphoto">
-          <img src="assets/231727630019.jpg" alt="ENERtec Asia 2026 TV interview" style="object-position:center 33%" loading="lazy" decoding="async">
-          <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
-          <span class="r-tag">ENERTEC ASIA 2026</span>
-          <span class="r-badge">ON AIR</span>
-        </div>
-        <div class="rcap">
-          <div class="r-cat">Media</div>
-          <h3>TV interview at ENERtec Asia 2026</h3>
-          <p>On air under the Energy and AI theme, on letting models like Random Forest guide energy decisions.</p>
-        </div>
-      </div>
-      <div class="fade" data-d="0.36">
-        <div class="rphoto">
-          <img src="assets/63b871acf8f2.webp" alt="Khaled interviewed by Estidamah at GSR 2026, KFUPM" style="object-position:center 30%" loading="lazy">
-          <span class="cb tl"></span><span class="cb tr"></span><span class="cb bl"></span><span class="cb br"></span>
-          <span class="r-tag">ESTIDAMAH AT KFUPM</span>
-          <span class="r-badge">INTERVIEW</span>
-        </div>
-        <div class="rcap">
-          <div class="r-cat">Media</div>
-          <h3>Talking AI with Estidamah</h3>
-          <p>On how AI can help farms run on less water and less electricity, at GSR 2026.</p>
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- ================= SERVICES / SKILLS ================= -->
